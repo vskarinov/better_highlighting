@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "better_highlighting"
+version = "0.1.0"
+description = "Small tool for text and syntax highlight."
+authors = ["vskarinov <skarinov27@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/vskarinov/better_highlighting"
+repository = "https://github.com/vskarinov/better_highlighting"
+include = [
+    "LICENSE",
+]
+
+#[tool.poetry.scripts]
+#cli_command_name = 'better_highlighting'
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Pygments = "^2.11.2"
+tabulate = "^0.8.9"
+pandas = "^1.4.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
