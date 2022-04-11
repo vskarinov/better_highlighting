@@ -4,6 +4,7 @@ from tabulate import tabulate
 from functools import partial
 import pandas as pd
 from better_highlighting.json_lexer import JSONLexer
+from pygments.lexers import PythonLexer
 from pygments.formatters import Terminal256Formatter
 from better_highlighting.style_builders import SimpleStyle, JSONStyle
 from better_highlighting.data_format import pretty_as_iterator, pretty_as_text, make_it_short
@@ -29,11 +30,13 @@ class __Printer:
         else:
             string_to_color = pretty_as_text(text_to_process)
         try:
-            print(highlight(
+            s = self._style
+            h = highlight(
                 string_to_color,
                 JSONLexer(),
-                Terminal256Formatter(style=self._style)
-            ))
+                Terminal256Formatter(style=s)
+            )
+            print(h)
         except AttributeError as e:
             raise e from e
 
@@ -62,11 +65,11 @@ class __Printer:
 
     def table(self, data: Union[list, str, dict],
               colors_style: Optional[str] = None,
-              short=False, transpose=False):
+              short=False, transpose=False, headers=True, store=False):
 
-        data_to_process = (make_it_short(data) if short else data) \
+        data_to_process = (make_it_short(data, nested=True) if short else data) \
             if isinstance(data, list) \
-            else (make_it_short([data]) if short else [data])
+            else [make_it_short(data, nested=True) if short else data]
 
         df = pd.DataFrame(data_to_process)
 
@@ -77,23 +80,26 @@ class __Printer:
 
         if transpose:
             table_opt = {'tabular_data': df.transpose(),
-                         'showindex': True,
+                         'showindex': headers,
                          'tablefmt': "fancy_grid",
                          'colalign': ("left",)
                          }
         else:
             table_opt = {'tabular_data': df,
-                         'headers': df.columns,
                          'showindex': False,
                          'tablefmt': "fancy_grid",
                          'colalign': ("left",)
                          }
 
+            table_opt.update({'headers': df.columns}) if headers else ...
+
         highlighted = highlight(tabulate(**table_opt),
                                 JSONLexer(),
                                 Terminal256Formatter(style=JSONStyle(colors_style).style_obj)).replace('||', '  ')
-
-        print(highlighted)
+        if store:
+            return highlighted
+        else:
+            print(highlighted)
 
     @property
     def _style(self):

@@ -1,3 +1,5 @@
+import re
+
 from pygments.lexer import RegexLexer, include, bygroups, \
     default, combined
 from pygments.util import shebang_matches
@@ -15,13 +17,6 @@ Table_Header = Token.Header
 
 
 class JSONPythonLexer(RegexLexer):
-    """
-    For `Python <http://www.python.org>`_ source code (version 3.x).
-    .. versionadded:: 0.10
-    .. versionchanged:: 2.5
-       This is now the default ``PythonLexer``.  It is still available as the
-       alias ``Python3Lexer``.
-    """
 
     name = 'JSONPython'
 
@@ -47,6 +42,8 @@ class JSONPythonLexer(RegexLexer):
             # newlines are an error (use "nl" state)
         ]
 
+    # flags = re.MULTILINE | re.UNICODE
+
     tokens = {
         'root': [
 
@@ -61,24 +58,25 @@ class JSONPythonLexer(RegexLexer):
             (r'#.*$', Comment.Single),
             (r'\\\n', Text),
             (r'\\', Text),
-            (r'(def)((?:\s|\\\s)+)', bygroups(Keyword, Text), 'funcname'),
-            (r'(class)((?:\s|\\\s)+)', bygroups(Keyword, Text), 'classname'),
+            # (r'(def)((?:\s|\\\s)+)', bygroups(Keyword, Text), 'funcname'),
+            # (r'(class)((?:\s|\\\s)+)', bygroups(Keyword, Text), 'classname'),
 
             (r'several items were not printed', SpecialMessages),
 
             (r'True|true', CustomTrue),
             (r'False|false', CustomFalse),
             (r'None|none', CustomNull),
-
-            (r'[a-zA-Z_]\w*', Text.Addition_1),
+            #
+            # (r'[a-zA-Z_]\w*', Name.Addition_1),
             (r'[1-9]+[a-z]', Text.Addition_2),
             (r'[?!]', Text.Addition_3),
 
             (r'(?<=\n\t.)\+(?=[a-zA-Z1-9])', FormatSeparator),
             (r'[╒═╤╕╞╪╡├─┼┤╘╧╛│]', Table_1),
 
+            include('expr'),
 
-            include('expr')
+
         ],
         'expr': [
             # raw f-strings
@@ -142,13 +140,13 @@ class JSONPythonLexer(RegexLexer):
             (r'@', Operator),  # new matrix multiplication operator
             (uni_name, Name),
         ],
-        'funcname': [
-            (uni_name, Name.Function, '#pop'),
-            default('#pop'),
-        ],
-        'classname': [
-            (uni_name, Name.Class, '#pop'),
-        ],
+        # 'funcname': [
+        #     (uni_name, Name.Function, '#pop'),
+        #     default('#pop'),
+        # ],
+        # 'classname': [
+        #     (uni_name, Name.Class, '#pop'),
+        # ],
         'rfstringescape': [
             (r'\{\{', String.Escape),
             (r'\}\}', String.Escape),

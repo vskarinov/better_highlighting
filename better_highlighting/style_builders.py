@@ -12,14 +12,14 @@ class SimpleStyle:
         self.style_obj = StyleMeta('SimpleStyle', (),
                                    {'__module__': self.__module__,
                                     '__qualname__': 'Style',
-                                    'background_color': '#ffffff',
-                                    'highlight_color': '#ffffcc',
-                                    'line_number_color': 'inherit',
-                                    'line_number_background_color': 'transparent',
-                                    'line_number_special_color': '#000000',
-                                    'line_number_special_background_color': '#ffffc0',
+                                    # 'background_color': '#ffffff',
+                                    # 'highlight_color': '#ffffcc',
+                                    # 'line_number_color': 'inherit',
+                                    # 'line_number_background_color': 'transparent',
+                                    # 'line_number_special_color': '#000000',
+                                    # 'line_number_special_background_color': '#ffffc0',
                                     'styles': {token: font_style for token in _tokens_simple},
-                                    'web_style_gallery_exclude': False
+                                    # 'web_style_gallery_exclude': False
                                     })
 
 
@@ -27,7 +27,7 @@ class JSONStyle:
     styles = {
         Token.Punctuation: 'ansired',
         Token.String: '#ffa500',
-        Token.Name: '#ffa500',
+        Token.Name: "ansigreen",#'#ffa500',
         Token.SpecialMessages: 'italic #76756C',
         Token.CustomTrue: 'bold #42EB53',
         Token.CustomFalse: 'bold #FF001A',
@@ -43,12 +43,12 @@ class JSONStyle:
         self.style_obj = StyleMeta('JSONStyle', (),
                                    {'__module__': self.__module__,
                                     '__qualname__': 'Style',
-                                    'background_color': '#ffffff',
-                                    'highlight_color': '#ffffcc',
-                                    'line_number_color': 'inherit',
-                                    'line_number_background_color': 'transparent',
-                                    'line_number_special_color': '#000000',
-                                    'line_number_special_background_color': '#ffffc0',
+                                    # 'background_color': '#ffffff',
+                                    # 'highlight_color': '#ffffcc',
+                                    # 'line_number_color': 'inherit',
+                                    # 'line_number_background_color': 'transparent',
+                                    # 'line_number_special_color': '#000000',
+                                    # 'line_number_special_background_color': '#ffffc0',
                                     'styles': self.styles,
-                                    'web_style_gallery_exclude': False
+                                    # 'web_style_gallery_exclude': False
                                     })

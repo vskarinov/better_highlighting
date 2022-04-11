@@ -1,5 +1,6 @@
 import textwrap as tw
 from typing import Union, Optional
+from dataclasses import is_dataclass, asdict, dataclass
 
 MIN_LENGTH_STR = 250
 MIN_LENGTH_LIST = 3
@@ -33,6 +34,7 @@ def pretty_as_iterator(value, htchar='\t', lfchar='\n', indent=0, key_length=0) 
         w = MIN_LENGTH_STR_IN_DICT - (len(lfchar) + len(htchar) * (indent + (key_length + tab_key_length)))
         value = tw.wrap(value, width=w + 1)
         return f' {lfchar + htchar * (indent + key_length)}+'.join(value)
+        # return f"{lfchar + htchar * (indent + (key_length + tab_key_length))}+".join(value) For table format
     elif type(value) is int:
         w = MIN_LENGTH_STR_IN_DICT - (len(lfchar) + len(htchar) * (indent + (key_length + tab_key_length)))
         value = tw.wrap(str(value), width=w + 1)
@@ -63,7 +65,9 @@ def pretty_as_text(value) -> str:
     return repr(value)
 
 
-def make_it_short(value: Union[str, list, dict], nested: Optional[bool] = False) -> Union[str, list, dict]:
+def make_it_short(value: Union[str, list, dict, dataclass],
+                  nested: Optional[bool] = False) -> Union[str, list, dict]:
+
     if type(value) is list:
         if (length := len(value)) > MIN_LENGTH_LIST:
             formatted_list = value.copy()
@@ -94,6 +98,9 @@ def make_it_short(value: Union[str, list, dict], nested: Optional[bool] = False)
             )
 
         return {key: make_it_short(value[key]) for key in value}
+
+    if is_dataclass(value):
+        return make_it_short(asdict(value))
 
     if type(value) is str:
         max_size = MIN_LENGTH_STR // 5
