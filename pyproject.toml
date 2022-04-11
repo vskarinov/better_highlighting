@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "better_highlighting"
-version = "0.1.0"
+version = "0.1.2"
 description = "Small tool for text and syntax highlight."
 authors = ["vskarinov <skarinov27@gmail.com>"]
 readme = "README.md"
@@ -10,10 +10,6 @@ repository = "https://github.com/vskarinov/better_highlighting"
 include = [
     "LICENSE",
 ]
-
-#[tool.poetry.scripts]
-#cli_command_name = 'better_highlighting'
-
 
 [tool.poetry.dependencies]
 python = "^3.9"
