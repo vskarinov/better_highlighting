@@ -3,7 +3,7 @@ from typing import Union, Optional
 from dataclasses import is_dataclass, asdict, dataclass
 
 MIN_LENGTH_STR = 250
-MIN_LENGTH_LIST = 3
+MIN_LENGTH_LIST = 4
 MIN_LENGTH_DICT = 10
 MIN_LENGTH_STR_IN_DICT = 40
 
@@ -77,6 +77,16 @@ def make_it_short(value: Union[str, list, dict, dataclass],
 
             return [make_it_short(item) for item in formatted_list]
         return [make_it_short(item) for item in value]
+
+    elif type(value) is tuple:
+        if (length := len(value)) > MIN_LENGTH_LIST:
+            formatted_list = list(value.copy())
+            del formatted_list[MIN_LENGTH_LIST:]
+            if not nested:
+                formatted_list.append(f'several items were not printed {length - MIN_LENGTH_LIST}')
+
+            return tuple(make_it_short(item) for item in formatted_list)
+        return tuple(make_it_short(item) for item in value)
 
     elif type(value) is dict:
         if (length := len(value)) > MIN_LENGTH_DICT:
