@@ -1,11 +1,29 @@
 import textwrap as tw
 from typing import Union, Optional
 from dataclasses import is_dataclass, asdict, dataclass
+import os
+
+import sys
+
+import configparser
 
 MIN_LENGTH_STR = 250
-MIN_LENGTH_LIST = 4
+MIN_LENGTH_LIST = 3
 MIN_LENGTH_DICT = 10
 MIN_LENGTH_STR_IN_DICT = 40
+
+MODULE_PATH_CONF = os.path.dirname(sys.path[0])
+config_file = os.path.join(MODULE_PATH_CONF, 'better_highlight.cfg')
+if os.path.isfile(config_file):
+
+    _config = configparser.ConfigParser()
+    with open(config_file, "r") as fl:
+        _config.read_file(fl)
+        MIN_LENGTH_STR = int(_config.get("data_format", "MIN_LENGTH_STR"))
+        MIN_LENGTH_LIST = int(_config.get("data_format", "MIN_LENGTH_LIST"))
+        MIN_LENGTH_DICT = int(_config.get("data_format", "MIN_LENGTH_DICT"))
+        MIN_LENGTH_STR_IN_DICT = int(_config.get("data_format", "MIN_LENGTH_STR_IN_DICT"))
+
 
 
 def pretty_as_iterator(value, htchar='\t', lfchar='\n', indent=0, key_length=0) -> str:

@@ -78,28 +78,46 @@ class __Printer:
         for c in df.columns:
             df[c] = df[c].apply(partial(pretty_as_iterator, htchar=' '))
 
-        if transpose:
-            table_opt = {'tabular_data': df.transpose(),
-                         'showindex': headers,
-                         'tablefmt': "fancy_grid",
-                         'colalign': ("left",)
-                         }
-        else:
-            table_opt = {'tabular_data': df,
-                         'showindex': False,
-                         'tablefmt': "fancy_grid",
-                         'colalign': ("left",)
-                         }
+        # if transpose:
+        #     table_opt = {'tabular_data': df.transpose(),
+        #                  'showindex': headers,
+        #                  'tablefmt': "fancy_grid",
+        #                  'colalign': ("left",)
+        #                  }
+        # else:
+        #     table_opt = {'tabular_data': df,
+        #                  'showindex': False,
+        #                  'tablefmt': "fancy_grid",
+        #                  'colalign': ("left",)
+        #                  }
+        #
+        #     table_opt.update({'headers': df.columns}) if headers else ...
+        #
+        # highlighted = highlight(tabulate(**table_opt),
+        #                         JSONLexer(),
+        #                         Terminal256Formatter(style=JSONStyle(colors_style).style_obj)).replace('||', '  ')
 
-            table_opt.update({'headers': df.columns}) if headers else ...
+        table_as_list = [
+            highlight(tabulate(
+                **{'tabular_data': df.iloc[i: i + 4].transpose() if transpose else df.iloc[i: i + 4],
+                   'showindex': headers,#True if transpose else False,
+                   'tablefmt': "fancy_grid",
+                   'colalign': ("left",)
+                   }
+            ),
+                JSONLexer(),
+                Terminal256Formatter(style=JSONStyle(colors_style).style_obj)
+            ).replace('||', '  ')
 
-        highlighted = highlight(tabulate(**table_opt),
-                                JSONLexer(),
-                                Terminal256Formatter(style=JSONStyle(colors_style).style_obj)).replace('||', '  ')
+            for i in range(0, len(df), 4)
+        ]
+
+        highlighted_table = f'{"↑" * 103}\n{"↓" * 103}\n'.join(table_as_list)
+
         if store:
-            return highlighted
+            return highlighted_table
         else:
-            print(highlighted)
+            print(highlighted_table)
 
     @property
     def _style(self):
