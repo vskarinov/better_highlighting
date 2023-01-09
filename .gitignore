@@ -21,6 +21,7 @@ log/*
 
 # virtual environment
 venv
+.venv
 
 # idea cache
 .idea/

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "better_highlighting"
-version = "0.1.4"
+version = "2.0.0"
 description = "Small tool for text and syntax highlight."
 authors = ["vskarinov <skarinov27@gmail.com>"]
 readme = "README.md"
@@ -11,11 +11,17 @@ include = [
     "LICENSE",
 ]
 
+packages = [
+#    { include = "better_highlighting", from = "src"},
+    { include = "better_highlighting", from = "src"}
+]
+
 [tool.poetry.dependencies]
 python = "^3.9"
 Pygments = "^2.11.2"
 tabulate = "^0.8.9"
 pandas = "^1.4.1"
+pytest = "^7.2.0"
 
 [tool.poetry.dev-dependencies]
 
