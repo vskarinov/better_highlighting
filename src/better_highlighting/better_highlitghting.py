@@ -137,11 +137,10 @@ def tabulate_with_color_font(text, color_font=None, wrap=False, short=False, tra
 
 
 if __name__ == "__main__":
-
     font_styles = [value for supported_font, value in Fonts.__dict__.items() if str(supported_font).isupper()]
 
     fonts_combinations = []
-    buffer_font = ""
+    buffer_font = str()
     for font_1, font_2 in product(font_styles, font_styles):
         res = f"{font_1} {font_2}"
         if font_1 != font_2 and res not in fonts_combinations and font_1 != buffer_font:
