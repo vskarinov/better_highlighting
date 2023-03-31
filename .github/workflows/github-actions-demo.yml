@@ -32,4 +32,4 @@ jobs:
         make tests
     - name: Check style
       run: |
-        make flake8
+        make lint
