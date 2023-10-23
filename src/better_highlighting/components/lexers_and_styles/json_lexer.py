@@ -62,8 +62,14 @@ class JSONPythonLexer(RegexLexer):
         "root": [
             (r"(?<=\|\|)([a-zA-Z1-9 _]*)(?=\|\|)", Table_Header),
             (r"\n", Text),
-            (r'^(\s*)([rRuUbB]{,2})("""(?:.|\n)*?""")', bygroups(Text, String.Affix, String.Doc)),
-            (r"^(\s*)([rRuUbB]{,2})('''(?:.|\n)*?''')", bygroups(Text, String.Affix, String.Doc)),
+            (
+                r'^(\s*)([rRuUbB]{,2})("""(?:.|\n)*?""")',
+                bygroups(Text, String.Affix, String.Doc),
+            ),
+            (
+                r"^(\s*)([rRuUbB]{,2})('''(?:.|\n)*?''')",
+                bygroups(Text, String.Affix, String.Doc),
+            ),
             (r"\A#!.+$", Comment.Hashbang),
             (r"#.*$", Comment.Single),
             (r"\\\n", Text),
@@ -85,13 +91,29 @@ class JSONPythonLexer(RegexLexer):
             # raw f-strings
             # ('(?i)(rf|fr)(""")', bygroups(String.Affix, String.Double), combined("rfstringescape", "tdqf")),
             # ("(?i)(rf|fr)(''')", bygroups(String.Affix, String.Single), combined("rfstringescape", "tsqf")),
-            ('(?i)(rf|fr)(")', bygroups(String.Affix, String.Double), combined("rfstringescape", "dqf")),
-            ("(?i)(rf|fr)(')", bygroups(String.Affix, String.Single), combined("rfstringescape", "sqf")),
+            (
+                '(?i)(rf|fr)(")',
+                bygroups(String.Affix, String.Double),
+                combined("rfstringescape", "dqf"),
+            ),
+            (
+                "(?i)(rf|fr)(')",
+                bygroups(String.Affix, String.Single),
+                combined("rfstringescape", "sqf"),
+            ),
             # non-raw f-strings
             # ('([fF])(""")', bygroups(String.Affix, String.Double), combined("fstringescape", "tdqf")),
             # ("([fF])(''')", bygroups(String.Affix, String.Single), combined("fstringescape", "tsqf")),
-            ('([fF])(")', bygroups(String.Affix, String.Double), combined("fstringescape", "dqf")),
-            ("([fF])(')", bygroups(String.Affix, String.Single), combined("fstringescape", "sqf")),
+            (
+                '([fF])(")',
+                bygroups(String.Affix, String.Double),
+                combined("fstringescape", "dqf"),
+            ),
+            (
+                "([fF])(')",
+                bygroups(String.Affix, String.Single),
+                combined("fstringescape", "sqf"),
+            ),
             # raw strings
             # ('(?i)(rb|br|r)(""")', bygroups(String.Affix, String.Double), "tdqs"),
             # ("(?i)(rb|br|r)(''')", bygroups(String.Affix, String.Single), "tsqs"),
@@ -100,8 +122,16 @@ class JSONPythonLexer(RegexLexer):
             # non-raw strings
             # ('([uUbB]?)(""")', bygroups(String.Affix, String.Double), combined("stringescape", "tdqs")),
             # ("([uUbB]?)(''')", bygroups(String.Affix, String.Single), combined("stringescape", "tsqs")),
-            ('([uUbB]?)(")', bygroups(String.Affix, String.Double), combined("stringescape", "dqs")),
-            ("([uUbB]?)(')", bygroups(String.Affix, String.Single), combined("stringescape", "sqs")),
+            (
+                '([uUbB]?)(")',
+                bygroups(String.Affix, String.Double),
+                combined("stringescape", "dqs"),
+            ),
+            (
+                "([uUbB]?)(')",
+                bygroups(String.Affix, String.Single),
+                combined("stringescape", "sqs"),
+            ),
             include("numbers"),
             (r"[^\S\n]+", Text),
             (r"!=|==|<<|>>|:=|[-~+/*%=<>&^|.]", Operator),
@@ -110,7 +140,11 @@ class JSONPythonLexer(RegexLexer):
             include("name"),
         ],
         "numbers": [
-            (r"(\d(?:_?\d)*\.(?:\d(?:_?\d)*)?|(?:\d(?:_?\d)*)?\.\d(?:_?\d)*)" r"([eE][+-]?\d(?:_?\d)*)?", Number.Float),
+            (
+                r"(\d(?:_?\d)*\.(?:\d(?:_?\d)*)?|(?:\d(?:_?\d)*)?\.\d(?:_?\d)*)"
+                r"([eE][+-]?\d(?:_?\d)*)?",
+                Number.Float,
+            ),
             (r"\d(?:_?\d)*[eE][+-]?\d(?:_?\d)*j?", Number.Float),
             (r"0[oO](?:_?[0-7])+", Number.Oct),
             (r"0[bB](?:_?[01])+", Number.Bin),
@@ -118,8 +152,8 @@ class JSONPythonLexer(RegexLexer):
             (r"\d(?:_?\d)*", Number.Integer),
         ],
         "name": [
-            (r"@" + uni_name, Name.Decorator),
-            (r"@", Operator),  # new matrix multiplication operator
+            (f"@{uni_name}", Name.Decorator),
+            (r"@", Operator),
             (uni_name, Name),
         ],
         "rfstringescape": [
@@ -132,7 +166,8 @@ class JSONPythonLexer(RegexLexer):
         ],
         "stringescape": [
             (
-                r'\\([\\abfnrtv"\']|\n|N\{.*?\}|u[a-fA-F0-9]{4}|' r"U[a-fA-F0-9]{8}|x[a-fA-F0-9]{2}|[0-7]{1,3})",
+                r'\\([\\abfnrtv"\']|\n|N\{.*?\}|u[a-fA-F0-9]{4}|'
+                r"U[a-fA-F0-9]{8}|x[a-fA-F0-9]{2}|[0-7]{1,3})",
                 String.Escape,
             )
         ],
@@ -158,6 +193,7 @@ class JSONPythonLexer(RegexLexer):
             include("strings-single"),
         ],
     }
+
 
 
 JSONLexer = JSONPythonLexer
